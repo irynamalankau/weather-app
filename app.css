@@ -1,0 +1,15 @@
+.container-fluid{
+    background-color: rgb(155, 173, 201);
+    height: 100vh;
+}
+
+#city{
+    font-size: 4rem;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+#current-temperature{
+    font-size: 2rem;
+    font-weight: 700;
+}
