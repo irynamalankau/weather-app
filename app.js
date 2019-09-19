@@ -84,13 +84,14 @@ function setExtraDays(dailyData){
     const date = new Date();
     const weekday = date.getDay();
     const extraDaysNames = getWeekDay(weekday);
-    for (let i=1; i<=4; i++){
+    console.log(extraDaysNames);
+    for (let extraDay=1; extraDay<4; extraDay++){
         //set the day name
-        document.querySelector(`#day${i}`).textContent = extraDaysNames[i-1];
+        document.querySelector(`#day${extraDay}`).textContent = extraDaysNames[extraDay-1];
         //set the extra day icon
-        setIcons(dailyData[i].icon, document.querySelector(`#day${i}_icon`));
+        setIcons(dailyData[extraDay].icon, document.querySelector(`#day${extraDay}_icon`));
         //set the min/max temp for the extra day
-        document.querySelector(`#day${i}-maxMinTemp`).textContent = `${Math.round(dailyData[i].temperatureMax)} | ${Math.round(dailyData[i].temperatureMin)}`
+        document.querySelector(`#day${extraDay}-maxMinTemp`).textContent = `${Math.round(dailyData[extraDay].temperatureMax)} | ${Math.round(dailyData[extraDay].temperatureMin)}`
     }
          
 }
@@ -100,7 +101,7 @@ function getWeekDay(weekday){
     const weekdayArray = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const extraDaysArray = [];
     let newWeekDay = weekday;
-    for (let i=0; i<=2; i++){
+    for (let extraDaysNumber=1; extraDaysNumber<=3; extraDaysNumber++){
         if (newWeekDay<6){
             extraDaysArray.push(weekdayArray[newWeekDay+1]);
             newWeekDay++;
@@ -134,3 +135,4 @@ function toggleDegree(){
             toggleDegreeBtn.textContent = "C": toggleDegreeBtn.textContent = "F"
         })
 }
+
