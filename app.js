@@ -81,9 +81,7 @@ function setIcons(icon, iconID){
 
 //function for setting extra days
 function setExtraDays(dailyData){
-    const date = new Date();
-    const weekday = date.getDay();
-    const extraDaysNames = getWeekDay(weekday);
+    const extraDaysNames = getWeekDay();
     console.log(extraDaysNames);
     for (let extraDay=1; extraDay<4; extraDay++){
         //set the day name
@@ -97,22 +95,18 @@ function setExtraDays(dailyData){
 }
 
 //function returns an array of extra days (names)
-function getWeekDay(weekday){
+function getWeekDay(){
     const weekdayArray = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const extraDaysArray = [];
-    let newWeekDay = weekday;
-    for (let extraDaysNumber=1; extraDaysNumber<=3; extraDaysNumber++){
-        if (newWeekDay<6){
-            extraDaysArray.push(weekdayArray[newWeekDay+1]);
-            newWeekDay++;
-        } else {
-            newWeekDay = 0;
-            extraDaysArray.push(weekdayArray[newWeekDay]);
-        }
+    const daysNumber = 3;
+    let daysCounter;
+    for (daysCounter = 1; daysCounter <= daysNumber; daysCounter++){
+        let day = new Date((new Date()).valueOf() + 1000*60*60*24*daysCounter).getDay();
+        extraDaysArray.push(weekdayArray[day]);
     }
-    
-    return(extraDaysArray);         
+    return(extraDaysArray);
 }
+
 
 //functionality for toggling extra days visibility
 function toggleExtraDays(){
@@ -136,3 +130,6 @@ function toggleDegree(){
         })
 }
 
+function convertionToCelsius(temperatureF){
+    return Math.round((temperatureF-32)/1.8)
+}
