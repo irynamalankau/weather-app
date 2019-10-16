@@ -19,21 +19,24 @@ const loader = {
 }
 
 // check for Geolocation support
-if (navigator.geolocation) {
-    loader.show();
-    navigator.geolocation.getCurrentPosition(getWeatherConditions); 
-}
-else {
-    var err_message = "Sorry, but Geolocation is not supported for this Browser version";
-    displayError(err);
-}
+// if (navigator.geolocation) {
+//     loader.show();
+//     navigator.geolocation.getCurrentPosition(getWeatherConditions); 
+// }
+// else {
+//     var err_message = "Sorry, but Geolocation is not supported for this Browser version";
+//     displayError(err);
+// }
 
 //fetch weather conditions based on location
-
+loader.show();
+getWeatherConditions();
 function getWeatherConditions(position){
-    const longitude = position.coords.longitude;
-    const latitude = position.coords.latitude;
-
+    //Set Chicago lat and long
+    const longitude = -87.6298;
+    const latitude = 41.8781;
+    console.log(longitude);
+    console.log(latitude);
     //add proxy for ability to see fetched data in localhost
     const proxy = "https://cors-anywhere.herokuapp.com/";
     const api = `${proxy}https://api.darksky.net/forecast/35d8377a47189b5d7d7b190eb4f552b8/${latitude},${longitude}`;
@@ -49,28 +52,29 @@ function getWeatherConditions(position){
             if(Object.keys(data).length !==0){
                 const {temperature, summary, icon} = data.currently;
                 const {temperatureMax, temperatureMin} = data.daily.data[0];
-                const timezone = data.timezone;
+                //const timezone = data.timezone;
                 const dailyData = data.daily.data;
                 //set current conditions
-                setCurrentConditions(timezone, temperature, temperatureMax, temperatureMin, summary, icon);
+                setCurrentConditions(temperature, temperatureMax, temperatureMin, summary, icon);
                 
                 //set extra days
                 setExtraDays(dailyData);
                 toggleExtraDays();
-                toggleDegree();
+                toggleDegree(temperature, temperatureMax, temperatureMin, dailyData);
+                
                 
             }
         });   
 }
 //function for setting current conditions
-function setCurrentConditions(timezone, temperature, temperatureMax, temperatureMin, summary, icon){
-    city.textContent = timezone.substring(timezone.indexOf("/")+1);
+function setCurrentConditions(temperature, temperatureMax, temperatureMin, summary, icon){
+    //city.textContent = timezone.substring(timezone.indexOf("/")+1);
     currentTemp.textContent = Math.round(temperature)+"&deg";
-    currentMaxMinTemp.textContent = `${Math.round(temperatureMax)} | ${Math.round(temperatureMin)}`
+    currentMaxMinTemp.textContent = `${Math.round(temperatureMax)} | ${Math.round(temperatureMin)}`;
     currentSummary.textContent = summary;
     //set icon
     setIcons(icon, document.querySelector("#current-icon"));
-}  
+} 
 //function for creating icons
 function setIcons(icon, iconID){
     const skycons = new Skycons({"color": "white"});
@@ -83,7 +87,7 @@ function setIcons(icon, iconID){
 function setExtraDays(dailyData){
     const extraDaysNames = getWeekDay();
     console.log(extraDaysNames);
-    for (let extraDay=1; extraDay<4; extraDay++){
+    for (let extraDay=1; extraDay<=3; extraDay++){
         //set the day name
         document.querySelector(`#day${extraDay}`).textContent = extraDaysNames[extraDay-1];
         //set the extra day icon
@@ -112,24 +116,39 @@ function getWeekDay(){
 function toggleExtraDays(){
     extraDaysBlock.style.visibility = "hidden";
     toggleExtraDaysBtn.addEventListener("click", function(){
-        if(toggleExtraDaysBtn.textContent === "Show More") {
+        if(toggleExtraDaysBtn.textContent === "Next 3 Days") {
             toggleExtraDaysBtn.textContent = "Show Less";
             extraDaysBlock.style.visibility = "visible";
-            console.log("work");
         } else{
-            toggleExtraDaysBtn.textContent = "Show More";
+            toggleExtraDaysBtn.textContent = "Next 3 Days";
             extraDaysBlock.style.visibility = "hidden";
         }
     })
 }
 
-function toggleDegree(){
+function toggleDegree(temperature, temperatureMax, temperatureMin, dailyData){
     toggleDegreeBtn.addEventListener("click", ()=>{
-        (toggleDegreeBtn.textContent === "F")?
-            toggleDegreeBtn.textContent = "C": toggleDegreeBtn.textContent = "F"
-        })
+        if (toggleDegreeBtn.textContent === "F") {
+            toggleDegreeBtn.textContent = "C";
+            currentTemp.textContent = convertionToCelsius(temperature)+"&deg";
+            currentMaxMinTemp.textContent = `${convertionToCelsius(temperatureMax)} | ${convertionToCelsius(temperatureMin)}`;
+            for (let extraDay = 1; extraDay<=3; extraDay++){
+                document.querySelector(`#day${extraDay}-maxMinTemp`).textContent = `${convertionToCelsius(dailyData[extraDay].temperatureMax)} | ${convertionToCelsius(dailyData[extraDay].temperatureMin)}` 
+            }
+            
+        } else {
+            toggleDegreeBtn.textContent = "F";
+            currentTemp.textContent = Math.round(temperature)+"&deg";
+            currentMaxMinTemp.textContent = `${Math.round(temperatureMax)} | ${Math.round(temperatureMin)}`;
+            for (let extraDay = 1; extraDay<=3; extraDay++){
+                document.querySelector(`#day${extraDay}-maxMinTemp`).textContent = `${Math.round(dailyData[extraDay].temperatureMax)} | ${Math.round(dailyData[extraDay].temperatureMin)}` 
+            }
+        }
+    })       
 }
 
 function convertionToCelsius(temperatureF){
     return Math.round((temperatureF-32)/1.8)
 }
+
+
