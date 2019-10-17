@@ -1,8 +1,9 @@
-@import 'https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700';
 
 html,
 body{
-    font-family: 'Open Sans Condensed', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
 .background-image{
@@ -26,8 +27,13 @@ body{
 }
 
 .container-fluid{
-    
-    height: 100vh;
+    min-height: 100%;
+    position: relative;
+}
+
+.nav{
+    margin-top: 0px;
+    padding: 10px 0px 10px 0px
 }
 
 #city{
@@ -41,17 +47,35 @@ body{
     font-weight: 700;
 }
 
-   
+#toggleExtraDays{
+    margin: 30px 10px 0 0;
+}
+
 #extraDays{
     margin: 30px auto;
-    max-width:60%;
-    font-size: 20px;
+    max-width: 60%;
+    font-size: 15px;
     text-align: center; 
 }
 
 #day1_icon, #day2_icon, #day3_icon{
     width: 30px;
     height: 30px;
-  }
-   
-   
+}
+
+.footer {
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+
+}
+
+.footer-p{
+    margin: 0 auto;
+    font-size: 17px;
+    line-height: 25px;
+
+}
+

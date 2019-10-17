@@ -69,7 +69,7 @@ function getWeatherConditions(position){
 //function for setting current conditions
 function setCurrentConditions(temperature, temperatureMax, temperatureMin, summary, icon){
     //city.textContent = timezone.substring(timezone.indexOf("/")+1);
-    currentTemp.textContent = Math.round(temperature)+"&deg";
+    currentTemp.textContent = Math.round(temperature)+"\xB0";
     currentMaxMinTemp.textContent = `${Math.round(temperatureMax)} | ${Math.round(temperatureMin)}`;
     currentSummary.textContent = summary;
     //set icon
@@ -93,7 +93,7 @@ function setExtraDays(dailyData){
         //set the extra day icon
         setIcons(dailyData[extraDay].icon, document.querySelector(`#day${extraDay}_icon`));
         //set the min/max temp for the extra day
-        document.querySelector(`#day${extraDay}-maxMinTemp`).textContent = `${Math.round(dailyData[extraDay].temperatureMax)} | ${Math.round(dailyData[extraDay].temperatureMin)}`
+        document.querySelector(`#day${extraDay}-maxMinTemp`).textContent = `${Math.round(dailyData[extraDay].temperatureMax)+"\xB0"} | ${Math.round(dailyData[extraDay].temperatureMin)+"\xB0"}`
     }
          
 }
@@ -130,18 +130,18 @@ function toggleDegree(temperature, temperatureMax, temperatureMin, dailyData){
     toggleDegreeBtn.addEventListener("click", ()=>{
         if (toggleDegreeBtn.textContent === "F") {
             toggleDegreeBtn.textContent = "C";
-            currentTemp.textContent = convertionToCelsius(temperature)+"&deg";
-            currentMaxMinTemp.textContent = `${convertionToCelsius(temperatureMax)} | ${convertionToCelsius(temperatureMin)}`;
+            currentTemp.textContent = convertionToCelsius(temperature)+"\xB0";
+            currentMaxMinTemp.textContent = `${convertionToCelsius(temperatureMax)+"\xB0"} | ${convertionToCelsius(temperatureMin)+"\xB0"}`;
             for (let extraDay = 1; extraDay<=3; extraDay++){
-                document.querySelector(`#day${extraDay}-maxMinTemp`).textContent = `${convertionToCelsius(dailyData[extraDay].temperatureMax)} | ${convertionToCelsius(dailyData[extraDay].temperatureMin)}` 
+                document.querySelector(`#day${extraDay}-maxMinTemp`).textContent = `${convertionToCelsius(dailyData[extraDay].temperatureMax)+"\xB0"} | ${convertionToCelsius(dailyData[extraDay].temperatureMin)+"\xB0"}` 
             }
             
         } else {
             toggleDegreeBtn.textContent = "F";
-            currentTemp.textContent = Math.round(temperature)+"&deg";
-            currentMaxMinTemp.textContent = `${Math.round(temperatureMax)} | ${Math.round(temperatureMin)}`;
+            currentTemp.textContent = Math.round(temperature)+"\xB0";
+            currentMaxMinTemp.textContent = `${Math.round(temperatureMax)+"\xB0"} | ${Math.round(temperatureMin)+"\xB0"}`;
             for (let extraDay = 1; extraDay<=3; extraDay++){
-                document.querySelector(`#day${extraDay}-maxMinTemp`).textContent = `${Math.round(dailyData[extraDay].temperatureMax)} | ${Math.round(dailyData[extraDay].temperatureMin)}` 
+                document.querySelector(`#day${extraDay}-maxMinTemp`).textContent = `${Math.round(dailyData[extraDay].temperatureMax)+"\xB0"} | ${Math.round(dailyData[extraDay].temperatureMin)+"\xB0"}` 
             }
         }
     })       
