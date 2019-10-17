@@ -1,4 +1,5 @@
-const city = document.querySelector("#city");
+//const city = document.querySelector("#city");
+const content = document.querySelector("#content");
 const currentIcon = document.querySelector("#current_icon");
 const currentTemp = document.querySelector("#current-temperature");
 const currentMaxMinTemp = document.querySelector("#current-maxMin-temp");
@@ -69,8 +70,10 @@ function getWeatherConditions(position){
 //function for setting current conditions
 function setCurrentConditions(temperature, temperatureMax, temperatureMin, summary, icon){
     //city.textContent = timezone.substring(timezone.indexOf("/")+1);
+    content.style.visibility = "visible";
+    toggleDegreeBtn.style.visibility = "visible";
     currentTemp.textContent = Math.round(temperature)+"\xB0";
-    currentMaxMinTemp.textContent = `${Math.round(temperatureMax)} | ${Math.round(temperatureMin)}`;
+    currentMaxMinTemp.textContent = `${Math.round(temperatureMax)+"\xB0"} | ${Math.round(temperatureMin)+"\xB0"}`;
     currentSummary.textContent = summary;
     //set icon
     setIcons(icon, document.querySelector("#current-icon"));
@@ -104,8 +107,9 @@ function getWeekDay(){
     const extraDaysArray = [];
     const daysNumber = 3;
     let daysCounter;
+    const dayOfset = 1000*60*60*24
     for (daysCounter = 1; daysCounter <= daysNumber; daysCounter++){
-        let day = new Date((new Date()).valueOf() + 1000*60*60*24*daysCounter).getDay();
+        let day = new Date((new Date()).valueOf() + dayOfset*daysCounter).getDay();
         extraDaysArray.push(weekdayArray[day]);
     }
     return(extraDaysArray);

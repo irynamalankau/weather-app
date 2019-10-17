@@ -6,6 +6,12 @@ body{
     height: 100%;
 }
 
+#loader{
+    width: 60%;
+    text-align: center;
+    margin: 50px auto;
+}
+
 .background-image{
     position: absolute;
     top: 0;
@@ -73,7 +79,7 @@ body{
 }
 
 .footer-p{
-    margin: 0 auto;
+    margin: auto;
     font-size: 17px;
     line-height: 25px;
 
