@@ -1,5 +1,7 @@
 //const city = document.querySelector("#city");
 const content = document.querySelector("#content");
+const error = document.querySelector("#error");
+const loading = document.querySelector("#loader");
 const currentIcon = document.querySelector("#current_icon");
 const currentTemp = document.querySelector("#current-temperature");
 const currentMaxMinTemp = document.querySelector("#current-maxMin-temp");
@@ -30,9 +32,20 @@ const loader = {
 // }
 
 //fetch weather conditions based on location
+function handleErrors(response) {
+    if (!response.ok) {
+        error.textContent = "Opps... Something went wrong. Try to reload.";
+        loading.style.visibility = "hidden";
+        throw Error(response.statusText);   
+    }
+    return response.json();
+}
+
 loader.show();
 getWeatherConditions();
-function getWeatherConditions(position){
+
+
+function getWeatherConditions(){
     //Set Chicago lat and long
     const longitude = -87.6298;
     const latitude = 41.8781;
@@ -43,9 +56,7 @@ function getWeatherConditions(position){
     const api = `${proxy}https://api.darksky.net/forecast/35d8377a47189b5d7d7b190eb4f552b8/${latitude},${longitude}`;
 
     fetch(api)
-        .then(response =>{
-            return response.json();
-        })
+        .then(handleErrors)
         .then(data =>{
             console.log(data)
             loader.hide();
@@ -61,12 +72,13 @@ function getWeatherConditions(position){
                 //set extra days
                 setExtraDays(dailyData);
                 toggleExtraDays();
-                toggleDegree(temperature, temperatureMax, temperatureMin, dailyData);
-                
-                
+                toggleDegree(temperature, temperatureMax, temperatureMin, dailyData);    
             }
-        });   
+        })
+        .catch(error=> console.log(error));   
 }
+
+
 //function for setting current conditions
 function setCurrentConditions(temperature, temperatureMax, temperatureMin, summary, icon){
     //city.textContent = timezone.substring(timezone.indexOf("/")+1);
